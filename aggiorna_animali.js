@@ -45,6 +45,49 @@ async function scarica(url, opz, ms) {
   }
 }
 
+// Copia preparata ogni giorno dal computer di paolo (osm_italia.py, PBF Italia di Geofabrik):
+// si usa per prima, Overpass resta solo come riserva. Vale se i dati OSM hanno meno di GIORNI_COPIA giorni.
+const COPIA_PC = process.env.COPIA_PC || "https://github.com/quivicino/Pets/releases/download/dati-osm/pets.json.gz";
+const GIORNI_COPIA = 3;
+let datiOsm = null;   // data dei dati OSM della copia usata (finisce in indice.json)
+
+async function daCopiaPc() {
+  console.log(`Scarico la copia del computer: ${COPIA_PC} …`);
+  const r = await scarica(COPIA_PC, {}, 5 * 60000);
+  const dati = JSON.parse(require("zlib").gunzipSync(Buffer.from(await r.arrayBuffer())).toString("utf8"));
+  const base = dati.osm3s && dati.osm3s.timestamp_osm_base;
+  const giorni = (Date.now() - Date.parse(base)) / 86400000;
+  if (!(giorni < GIORNI_COPIA)) throw new Error(`copia troppo vecchia (dati OSM del ${base})`);
+  const n = (dati.elements || []).length;
+  if (n < 5000) throw new Error(`troppo pochi elementi (${n}): copia incompleta?`);
+  console.log(`  ${n} elementi, dati OSM del ${base}`);
+  return { elementi: dati.elements, base };
+}
+
+// true se ha pubblicato i dati della copia del computer (o se erano già quelli pubblicati)
+async function usaCopiaPc(sito) {
+  let copia;
+  try {
+    copia = await daCopiaPc();
+  } catch (e) {
+    console.log(`Copia del computer non disponibile (${e.message}): uso Overpass come prima.`);
+    return false;
+  }
+  try {
+    const { indice } = await indicePubblicato(sito);
+    if (indice.datiOsm === copia.base && indice.versioneDati === (typeof VERSIONE_DATI === "undefined" ? undefined : VERSIONE_DATI)) {
+      console.log("I dati della copia sono già pubblicati: li ricopio dal sito.");
+      await recuperaDalSito(sito);
+      scriviEsito("recenti");
+      return true;
+    }
+  } catch (e) { /* niente dati pubblicati o non ricopiabili: si salvano quelli della copia */ }
+  datiOsm = copia.base;
+  salva(copia.elementi, veterinariOverture());
+  scriviEsito("nuovi");
+  return true;
+}
+
 async function daOverpass() {
   let ultimo;
   for (let giro = 0; giro < 2; giro++) {
@@ -121,6 +164,7 @@ function salva(elementi, overture) {
     passo: PASSO,
     versioneDati: VERSIONE_DATI,
     aggiornato: new Date().toISOString().replace(/\.\d+Z$/, "Z"),
+    datiOsm,            // data dei dati della copia del computer (null = da Overpass)
     punti: Object.values(conta).reduce((a, b) => a + b, 0),
     perTipo: conta,
     overture: overture.versione || null,
@@ -178,6 +222,7 @@ function scriviEsito(stato) {
 async function main() {
   const sito = process.env.SITO;
   const forza = process.env.FORZA === "1" || process.env.FORZA === "true";
+  if (await usaCopiaPc(sito)) return;
   if (!forza) {
     try {
       const { indice } = await indicePubblicato(sito);
