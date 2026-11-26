@@ -13,7 +13,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="stylesheet" href="style.css?v=11">
+  <link rel="stylesheet" href="qui-tema.css?v=1">
 </head>
 <body>
   <div class="app">
@@ -66,12 +67,8 @@
       </div>
 
       <div class="fab-azioni">
-        <button class="fab fab-rosso" id="btn-ps" type="button" title="Il pronto soccorso veterinario più vicino" aria-label="Mostra il pronto soccorso veterinario più vicino">
-          <span class="sigla" aria-hidden="true">PS</span>
-        </button>
-        <button class="fab fab-verde" id="btn-veterinario" type="button" title="Il veterinario più vicino" aria-label="Mostra il veterinario più vicino, aperto se possibile">
-          <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><g fill="currentColor"><ellipse cx="5.6" cy="10.4" rx="2.2" ry="2.8"/><ellipse cx="9.6" cy="5.6" rx="2.2" ry="2.8"/><ellipse cx="14.4" cy="5.6" rx="2.2" ry="2.8"/><ellipse cx="18.4" cy="10.4" rx="2.2" ry="2.8"/><path d="M12 11.2c-2.9 0-6 4.4-6 7 0 1.8 1.4 2.6 3 2.6 1.3 0 2-.6 3-.6s1.7.6 3 .6c1.6 0 3-.8 3-2.6 0-2.6-3.1-7-6-7Z"/></g></svg>
-        </button>
+        <button class="pill-azione rosso" id="btn-ps" type="button" title="Il pronto soccorso veterinario più vicino" aria-label="Mostra il pronto soccorso veterinario più vicino">Pronto soccorso</button>
+        <button class="pill-azione accento" id="btn-veterinario" type="button" title="Il veterinario più vicino" aria-label="Mostra il veterinario più vicino, aperto se possibile">Veterinario più vicino</button>
       </div>
     </main>
 
@@ -204,8 +201,8 @@
             <li><span class="g-segno"><span class="g-fab nero"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="4.5" cy="6" r="1.6" fill="currentColor"/><circle cx="4.5" cy="12" r="1.6" fill="currentColor"/><circle cx="4.5" cy="18" r="1.6" fill="currentColor"/></svg></span></span><div><b>Elenco</b>: apre la pagina con tutti i punti vicini e le impostazioni.</div></li>
             <li><span class="g-segno"><span class="g-fab"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span><div><b>Aggiorna</b>: ricarica subito i dati e ricalcola chi è aperto.</div></li>
             <li><span class="g-segno"><span class="btn-help g-help">HELP</span></span><div><b>HELP</b> (in alto nella pagina Elenco, accanto alla X): apre questa pagina.</div></li>
-            <li><span class="g-segno"><span class="g-fab rosso"><b style="font:700 18px/1 var(--font-display)">PS</b></span></span><div><b>Pronto soccorso veterinario</b>: porta la mappa sul pronto soccorso veterinario più vicino entro il raggio, qualunque cosa tu stia guardando.</div></li>
-            <li><span class="g-segno"><span class="g-fab verde"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><g fill="currentColor"><ellipse cx="5.6" cy="10.4" rx="2.2" ry="2.8"/><ellipse cx="9.6" cy="5.6" rx="2.2" ry="2.8"/><ellipse cx="14.4" cy="5.6" rx="2.2" ry="2.8"/><ellipse cx="18.4" cy="10.4" rx="2.2" ry="2.8"/><path d="M12 11.2c-2.9 0-6 4.4-6 7 0 1.8 1.4 2.6 3 2.6 1.3 0 2-.6 3-.6s1.7.6 3 .6c1.6 0 3-.8 3-2.6 0-2.6-3.1-7-6-7Z"/></g></svg></span></span><div><b>Veterinario</b>: porta la mappa sul veterinario più vicino aperto adesso; se nessuno risulta aperto, sul più vicino.</div></li>
+            <li><span class="g-segno"><span class="g-pill rosso">Pronto soccorso</span></span><div><b>Pronto soccorso veterinario</b>: porta la mappa sul pronto soccorso veterinario più vicino entro il raggio, qualunque cosa tu stia guardando.</div></li>
+            <li><span class="g-segno"><span class="g-pill accento">Veterinario più vicino</span></span><div><b>Veterinario</b>: porta la mappa sul veterinario più vicino aperto adesso; se nessuno risulta aperto, sul più vicino.</div></li>
           </ul>
           <p>Per ingrandire o rimpicciolire la mappa usa due dita.</p>
         </section>

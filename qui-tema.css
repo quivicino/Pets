@@ -1,0 +1,76 @@
+/* =====================================================================
+   qui-tema.css – aspetto comune di tutte le app «Qui»
+   (Colonnine, Distributori, Parking, Trekking, Bike, Pets, Rifiuti, Salus, Ski)
+
+   QUESTO FILE È UGUALE IN TUTTE LE APP: non modificarlo in una sola app.
+   Ogni app sceglie solo la sua coppia di colori, in style.css, così:
+
+     :root { --accento: #8a4b14; }      colore dell'app (fine della barra sfumata)
+
+   Facoltativo:  --qui-blu   (inizio della barra, pulsanti; di serie blu Qui #0d0cf2)
+                 --qui-campo (sfondo di campi e pulsanti nella barra; di serie #3433f3)
+
+   Va caricato DOPO style.css (così l'aspetto comune vale per tutte):
+     <link rel="stylesheet" href="style.css?v=…">
+     <link rel="stylesheet" href="qui-tema.css?v=1">
+   ===================================================================== */
+
+:root {
+  /* colori principali dell'app: blu Qui per pulsanti, spunte, link */
+  --blu: var(--qui-blu, #0d0cf2);
+  --blu-scuro: var(--qui-blu-scuro, #0a0ab8);
+  --barra: var(--qui-blu, #0d0cf2);
+}
+@media (prefers-color-scheme: dark) {
+  :root { --blu: #8a8aff; --blu-scuro: #6c6cf5; --barra: #0a0aa8; }
+}
+
+/* ---- Barra in alto: sfumata nero → blu → colore dell'app ---- */
+.topbar {
+  background: linear-gradient(90deg,
+    #000000 0%, #00185a 11%, #003bd7 28%, #1352ed 37%,
+    color-mix(in srgb, var(--accento, #0ceb2d) 50%, #1352ed) 62%,
+    color-mix(in srgb, var(--accento, #0ceb2d) 85%, #1352ed) 87%,
+    var(--accento, #0ceb2d) 100%);
+}
+
+/* campi, menu e pulsanti nella barra: blu pieno con il bordino bianco */
+.raggio select, .carb select, .cat-btn, .barra-btn {
+  background: var(--qui-campo, #3433f3); color: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .9);
+}
+.barra-btn {
+  flex: 1 1 auto; min-width: 0; height: 38px; border: 0; border-radius: 10px; padding: 0 10px;
+  font: 700 15px/1 var(--font-body);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.barra-btn[aria-expanded="true"], .barra-btn[aria-pressed="true"] { background: #fff; color: var(--qui-blu, #0d0cf2); }
+@media (max-width: 480px) {
+  .barra-btn { padding: 0 7px; font-size: 14px; }
+  .topbar { gap: 6px; padding-left: 10px; padding-right: 10px; }
+}
+
+/* ---- Pulsanti oblunghi in basso a sinistra ---- */
+.fab-azioni { align-items: flex-start; }
+.pill-azione {
+  height: 52px; padding: 0 22px; border: 0; border-radius: 999px; color: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .9), var(--ombra);
+  font: 700 18px/1 var(--font-display); letter-spacing: .03em; white-space: nowrap;
+  opacity: 1;
+}
+/* sfondo semitrasparente: sotto si intravede la mappa */
+.pill-azione.blu     { background: rgba(13, 12, 242, .72); }
+.pill-azione.verde   { background: rgba(21, 128, 90, .72); }
+.pill-azione.rosso   { background: rgba(211, 47, 47, .78); }
+.pill-azione.accento { background: color-mix(in srgb, var(--accento, #0ceb2d) 78%, transparent); }
+.pill-azione:disabled { cursor: default; background: rgba(138, 147, 166, .72); }
+
+/* gli stessi pulsanti, piccoli, nella guida */
+.g-pill {
+  display: inline-grid; place-items: center; height: 26px; padding: 0 10px; border-radius: 999px;
+  color: #fff; font: 700 12px var(--font-display); white-space: nowrap;
+}
+.g-pill.blu     { background: var(--qui-blu, #0d0cf2); }
+.g-pill.verde   { background: var(--libero); }
+.g-pill.rosso   { background: #d32f2f; }
+.g-pill.accento { background: var(--accento, #0ceb2d); }
